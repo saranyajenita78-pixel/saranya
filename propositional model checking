@@ -1,0 +1,13 @@
+from itertools import product
+
+# Symbols: P, Q
+symbols = ['P', 'Q']
+
+# Formula: (P AND Q) => P
+def formula(assign):
+    return (assign['P'] and assign['Q']) <= assign['P']
+
+# Model checking
+for values in product([True, False], repeat=len(symbols)):
+    model = dict(zip(symbols, values))
+    print(model, "=>", formula(model))
