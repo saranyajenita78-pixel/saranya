@@ -1,0 +1,32 @@
+# Simple AND-OR graph
+graph = {
+    'A': [('B','OR'), ('C','OR')],
+    'B': [('D','AND'), ('E','AND')],
+    'C': [('F','OR')],
+    'D': [], 'E': [], 'F': []
+}
+
+# Heuristic values
+h = {'A':5,'B':3,'C':4,'D':0,'E':0,'F':0}
+
+def ao_star(n):
+    if not graph[n]: return h[n]        # Goal node
+    
+    best_cost, best_child = 9999, None
+
+    for (child, typ) in graph[n]:
+        if typ == 'OR':
+            cost = h[child]
+        else:                           # AND → sum of children
+            cost = sum(h[c] for (c,_) in graph[n])
+
+        if cost < best_cost:
+            best_cost, best_child = cost, child
+
+    h[n] = best_cost                    # Update cost
+    print(n, "→", best_child, "cost:", best_cost)
+
+    ao_star(best_child)                # Expand best
+
+# Run
+ao_star('A')
