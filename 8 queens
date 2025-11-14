@@ -1,0 +1,7 @@
+def solve(q=[]):
+if len(q)==8: return q
+for c in range(8):
+if all(c!=q[i] and abs(c-q[i])!=len(q)-i for i in range(len(q))):
+s=solve(q+[c])
+if s: return s
+b=solve(); [print("."*c+"Q"+"."*(7-c)) for c in b]
