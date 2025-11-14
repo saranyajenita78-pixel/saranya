@@ -1,0 +1,13 @@
+from collections import deque
+def bfs(s,g):
+q,seen=deque([(s,[])]),{s}
+while q:
+u,p=q.popleft()
+if u==g:return p+[u]
+i=u.index("0")
+for d in(-1,1,-3,3):
+j=i+d
+if 0<=j<9 and not(i%3==0 and d==-1) and not(i%3==2 and d==1):
+v=list(u);v[i],v[j]=v[j],v[i];v="".join(v)
+if v not in seen:seen|={v};q.append((v,p+[u]))
+print(bfs("123405678","123456780"))
