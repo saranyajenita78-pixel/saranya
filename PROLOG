@@ -1,0 +1,17 @@
+# Define facts
+parent = {
+    'john': ['mary', 'tom'],
+    'mary': ['susan']
+}
+
+# Query function
+def is_parent(p, c):
+    return c in parent.get(p, [])
+
+def children(p):
+    return parent.get(p, [])
+
+# Test queries
+print(is_parent('john', 'mary'))  # True
+print(children('john'))            # ['mary', 'tom']
+print(children('mary'))            # ['susan']
