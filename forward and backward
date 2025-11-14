@@ -1,0 +1,32 @@
+# Facts and rules
+facts = set(['A', 'B'])
+rules = [
+    (['A','B'], 'C'),   # If A and B then C
+    (['C'], 'D'),       # If C then D
+    (['D','B'], 'E')    # If D and B then E
+]
+
+# Forward Chaining
+def forward_chain(facts):
+    added = True
+    while added:
+        added = False
+        for pre, post in rules:
+            if all(p in facts for p in pre) and post not in facts:
+                facts.add(post)
+                added = True
+    return facts
+
+print("Forward Chaining Result:", forward_chain(set(facts)))
+
+# Backward Chaining
+def backward_chain(goal, facts):
+    if goal in facts:
+        return True
+    for pre, post in rules:
+        if post == goal:
+            if all(backward_chain(p, facts) for p in pre):
+                return True
+    return False
+
+print("Backward Chaining Query E:", backward_chain('E', set(facts)))
