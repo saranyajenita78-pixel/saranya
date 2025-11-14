@@ -1,0 +1,41 @@
+from queue import PriorityQueue
+
+# Graph: node → (neighbor, cost)
+graph = {
+    'A': [('B',1), ('C',3)],
+    'B': [('D',3), ('E',1)],
+    'C': [('F',1)],
+    'D': [], 'E': [], 'F': []
+}
+
+# Heuristic values
+h = {'A':5,'B':3,'C':4,'D':0,'E':0,'F':0}
+
+def greedy_bfs(start, goal):
+    pq = PriorityQueue()
+    pq.put((h[start], start))
+    visited = set()
+    parent = {start: None}
+
+    while not pq.empty():
+        _, node = pq.get()
+        if node in visited: continue
+        visited.add(node)
+
+        if node == goal:
+            break
+
+        for (child, cost) in graph[node]:
+            if child not in visited:
+                parent[child] = node
+                pq.put((h[child], child))
+
+    # reconstruct path
+    path = []
+    n = goal
+    while n:
+        path.append(n)
+        n = parent[n]
+    return list(reversed(path))
+
+print("Greedy Best First Path:", greedy_bfs('A','E'))
