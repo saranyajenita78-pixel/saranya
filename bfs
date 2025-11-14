@@ -1,0 +1,23 @@
+from collections import deque
+
+graph = {
+    'A':['B','C'],
+    'B':['D','E'],
+    'C':['F'],
+    'D':[], 'E':[], 'F':[]
+}
+
+def bfs(start):
+    q = deque([start])
+    visited = set([start])
+
+    while q:
+        node = q.popleft()
+        print(node, end=" ")
+
+        for neigh in graph[node]:
+            if neigh not in visited:
+                visited.add(neigh)
+                q.append(neigh)
+
+bfs('A')
