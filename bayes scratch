@@ -1,0 +1,21 @@
+import numpy as np
+
+# Training data: features + class
+data = np.array([[1,20,0],[2,21,0],[3,22,1],[4,23,1]])
+X, y = data[:,:-1], data[:,-1]
+classes = np.unique(y)
+
+# Mean & variance per class
+stats = {c: (X[y==c].mean(0), X[y==c].var(0)) for c in classes}
+
+# Gaussian probability
+def gauss(x, mean, var):
+    return np.prod(1/np.sqrt(2*np.pi*var)*(np.exp(-(x-mean)**2/(2*var))))
+
+# Predict
+def predict(x):
+    return classes[np.argmax([np.mean(y==c)*gauss(x,*stats[c]) for c in classes])]
+
+# Test
+for x in np.array([[1.5,20.5],[3.5,22.5]]):
+    print(f"{x} → Class {predict(x)}")
