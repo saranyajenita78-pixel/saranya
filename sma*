@@ -1,0 +1,24 @@
+import heapq
+
+def sma_star(graph, start, goal, h, max_mem=5):
+    open_list = [(h[start], 0, start, [start])]  # (f, g, node, path)
+    
+    while open_list:
+        f, g, node, path = heapq.heappop(open_list)
+        if node == goal: 
+            return path
+        for neigh, cost in graph.get(node, []):
+            heapq.heappush(open_list, (g+cost+h[neigh], g+cost, neigh, path+[neigh]))
+        # memory bound
+        if len(open_list) > max_mem:
+            open_list.sort(reverse=True)
+            open_list = open_list[:max_mem]
+            heapq.heapify(open_list)
+    return None
+
+# Graph and heuristic
+graph = {'A':[('B',1),('C',4)], 'B':[('D',2),('E',5)], 'C':[('F',1)],
+         'D':[('G',3)], 'E':[('G',2)], 'F':[('G',2)], 'G':[]}
+h = {'A':5,'B':4,'C':2,'D':2,'E':1,'F':2,'G':0}
+
+print("SMA* Path:", sma_star(graph,'A','G',h, max_mem=3))
