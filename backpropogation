@@ -1,0 +1,29 @@
+import numpy as np
+
+# Activation
+def sigmoid(x): return 1/(1+np.exp(-x))
+def d_sigmoid(x): return x*(1-x)
+
+# Training data (XOR example)
+X = np.array([[0,0],[0,1],[1,0],[1,1]])
+y = np.array([[0],[1],[1],[0]])
+
+# Weights
+w1 = np.random.rand(2,4)
+w2 = np.random.rand(4,1)
+lr = 0.5
+
+# Train
+for _ in range(5000):
+    h = sigmoid(X @ w1)
+    o = sigmoid(h @ w2)
+
+    d2 = (y - o) * d_sigmoid(o)
+    d1 = (d2 @ w2.T) * d_sigmoid(h)
+
+    w2 += h.T @ d2 * lr
+    w1 += X.T @ d1 * lr
+
+# Test
+print("Output:")
+print(o)
